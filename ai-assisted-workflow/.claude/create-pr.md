@@ -21,13 +21,29 @@ If the current branch IS the target branch, stop and tell the user: "You are alr
 
 If there are no commits ahead of the target branch, stop and tell the user: "No commits found ahead of '$TARGET_BRANCH'. Nothing to merge."
 
-### 3. Check for existing PR
+### 3. Resolve the `gh` executable
 
-Run: `gh pr list --head $(git branch --show-current) --base $TARGET_BRANCH --state open`
+Before running any `gh` command, determine the correct executable path:
+
+1. Run `gh --version` — if it succeeds, set `GH=gh` and continue.
+2. If that fails, run `where gh.exe` (Windows) — if it returns a path, set `GH` to that path.
+3. If `where` fails, check common install locations in order:
+   - `C:/Program Files/GitHub CLI/gh.exe`
+   - `C:/Program Files (x86)/GitHub CLI/gh.exe`
+   - `~/AppData/Local/GitHub CLI/gh.exe`
+   - `~/.local/bin/gh.exe`
+4. If a path from step 3 exists (test with `test -f "<path>"`), set `GH` to that path.
+5. If none of the above work, stop and tell the user: "GitHub CLI (`gh`) not found. Install it from https://cli.github.com/ and run `gh auth login`."
+
+Use `$GH` in place of `gh` for all subsequent commands in this skill.
+
+### 4. Check for existing PR
+
+Run: `$GH pr list --head $(git branch --show-current) --base $TARGET_BRANCH --state open`
 
 If a PR already exists, show the user the existing PR URL and ask if they want to update the description or stop.
 
-### 4. Analyze changes and generate PR content
+### 5. Analyze changes and generate PR content
 
 From the commit messages, changed files, and diff content, synthesize:
 
@@ -42,7 +58,7 @@ From the commit messages, changed files, and diff content, synthesize:
 
 **Type label** — Infer one of: `feat`, `fix`, `refactor`, `chore`, `docs`, `test`, `perf`
 
-### 5. Check if remote branch exists, push if needed
+### 6. Check if remote branch exists, push if needed
 
 Run: `git ls-remote --heads origin $(git branch --show-current)`
 
@@ -50,12 +66,12 @@ If the branch is not on the remote yet, run: `git push -u origin $(git branch --
 
 If the push fails, report the error and stop — do not force push.
 
-### 6. Create the PR
+### 7. Create the PR
 
 Run:
 
 ```
-gh pr create \
+$GH pr create \
   --base $TARGET_BRANCH \
   --title "<generated title>" \
   --body "$(cat <<'EOF'
@@ -74,10 +90,10 @@ EOF
 )"
 ```
 
-### 7. Output result
+### 8. Output result
 
-Print the PR URL returned by `gh pr create`.
+Print the PR URL returned by `$GH pr create`.
 
 Show the user the final title and summary so they can review what was generated.
 
-If the PR creation fails (e.g. no `gh` CLI, missing permissions), show the exact error and suggest: "Run `gh auth login` if you haven't authenticated yet."
+If the PR creation fails (e.g. missing permissions), show the exact error and suggest: "Run `$GH auth login` if you haven't authenticated yet."
