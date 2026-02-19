@@ -1,0 +1,40 @@
+enum ProductListingVisibility {
+  PUBLIC
+  PRIVATE
+}
+
+enum ProductListingStatus {
+  ACTIVE
+  ARCHIVED
+  SOLD_OUT
+}
+
+model ProductListing {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  sellerUserId       String                 @db.ObjectId
+  title              String
+  description        String?
+  category           String
+  price              Float
+  currency           String
+  quantityAvailable  Int
+  visibility         ProductListingVisibility @default(PUBLIC)
+  status             ProductListingStatus     @default(ACTIVE)
+  imageUrls          String[]                 @default([])
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sellerUser       User                    @relation("ProductListingSeller", fields: [sellerUserId], references: [id])
+  lifecycleEvents  ListingLifecycleEvent[] @relation("ListingLifecycleEventListing")
+  transactions     Transaction[]           @relation("TransactionProductListing")
+
+  @@index([sellerUserId, status])
+  @@index([visibility, status])
+  @@index([title])
+  @@map("product_listings")
+}

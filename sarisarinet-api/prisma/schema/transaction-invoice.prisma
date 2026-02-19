@@ -1,0 +1,37 @@
+enum TransactionInvoiceMimeType {
+  IMAGE_JPEG @map("image/jpeg")
+  IMAGE_PNG  @map("image/png")
+  IMAGE_WEBP @map("image/webp")
+}
+
+enum InvoiceScanStatus {
+  PENDING
+  CLEAN
+  INFECTED
+  FAILED
+}
+
+model TransactionInvoice {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  transactionId   String                     @unique @db.ObjectId
+  storageKey      String                     @unique
+  mimeType        TransactionInvoiceMimeType
+  size            Int
+  sha256          String
+  scanStatus      InvoiceScanStatus          @default(PENDING)
+  uploadedByUserId String                    @db.ObjectId
+  uploadedAt      DateTime
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  transaction    Transaction @relation("TransactionInvoiceTransaction", fields: [transactionId], references: [id])
+  uploadedByUser User        @relation("TransactionInvoiceUploader", fields: [uploadedByUserId], references: [id])
+
+  @@index([scanStatus])
+  @@map("transaction_invoices")
+}

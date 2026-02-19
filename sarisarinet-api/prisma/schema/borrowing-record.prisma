@@ -1,0 +1,49 @@
+enum BorrowingDirection {
+  BORROWED
+  LENT
+}
+
+enum BorrowingAssetType {
+  MONEY
+  ITEM
+}
+
+enum BorrowingRecordStatus {
+  UNPAID
+  PARTIALLY_PAID
+  PAID
+  PAID_LATE
+}
+
+model BorrowingRecord {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  ownerUserId        String               @db.ObjectId
+  counterpartyUserId String               @db.ObjectId
+  direction          BorrowingDirection
+  assetType          BorrowingAssetType
+  principalAmount    Float?
+  currency           String?
+  itemDescription    String?
+  quantity           Float?
+  dueDate            DateTime
+  status             BorrowingRecordStatus @default(UNPAID)
+  remainingBalance   Float
+  termsNote          String?
+  closedAt           DateTime?
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ownerUser      User                 @relation("BorrowingRecordOwner", fields: [ownerUserId], references: [id])
+  counterpartyUser User               @relation("BorrowingRecordCounterparty", fields: [counterpartyUserId], references: [id])
+  repayments     Repayment[]          @relation("BorrowingRecordRepayments")
+  settlementNotes SettlementNote[]    @relation("BorrowingRecordSettlementNotes")
+  auditEntries   BorrowingAuditEntry[] @relation("BorrowingRecordAuditEntries")
+
+  @@index([ownerUserId, counterpartyUserId, status, dueDate])
+  @@map("borrowing_records")
+}

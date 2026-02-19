@@ -1,0 +1,27 @@
+model CommerceMetricSnapshot {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId            String   @db.ObjectId
+  rangeStart        DateTime
+  rangeEnd          DateTime
+  revenue           Float
+  expense           Float
+  profit            Float
+  uniqueCustomers   Int
+  transactionCount  Int
+  invoiceCount      Int
+  computedAt        DateTime
+  sourceVersion     Int
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation("CommerceMetricSnapshotUser", fields: [userId], references: [id])
+
+  @@index([userId, computedAt])
+  @@index([userId, rangeStart, rangeEnd, sourceVersion])
+  @@map("transaction_metric_snapshots")
+}
