@@ -20,3 +20,4 @@ Column notes:
 |-------|------|-------|--------|------|-------|
 | 1 | BRD | — | ✅ Complete | 2026-02-19 | Completed BRD for multi-vendor marketplace with privacy, connections, organizations, and borrowing/lending tracking. |
 | 2 | Planning | — | ✅ Complete | 2026-02-19 | Published project plan with module estimates, sprint sequencing, dependency map, risk register, and critical path. |
+| 3 | Architecture | — | ✅ Complete | 2026-02-19 | Published full architecture with models, ERD, API map, auth rules, error standard, caching, media flow, and BRD route coverage. |
