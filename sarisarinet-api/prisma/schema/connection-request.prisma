@@ -1,0 +1,30 @@
+enum ConnectionRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELLED
+  EXPIRED
+}
+
+model ConnectionRequest {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  requesterUserId String                  @db.ObjectId
+  receiverUserId  String                  @db.ObjectId
+  status          ConnectionRequestStatus @default(PENDING)
+  respondedAt     DateTime?
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  requesterUser User @relation("ConnectionRequestRequester", fields: [requesterUserId], references: [id])
+  receiverUser  User @relation("ConnectionRequestReceiver", fields: [receiverUserId], references: [id])
+
+  @@unique([requesterUserId, receiverUserId, status])
+  @@index([receiverUserId, status])
+  @@index([requesterUserId, status])
+  @@map("connection_requests")
+}

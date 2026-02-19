@@ -1,0 +1,27 @@
+enum ReportModule {
+  COMMERCE
+  BORROWING
+  UNIFIED
+}
+
+model ReportViewPreset {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId    String       @db.ObjectId
+  name      String
+  module    ReportModule
+  filters   Json
+  isDefault Boolean      @default(false)
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation("ReportViewPresetUser", fields: [userId], references: [id])
+
+  @@unique([userId, name])
+  @@index([userId, module])
+  @@map("report_view_presets")
+}

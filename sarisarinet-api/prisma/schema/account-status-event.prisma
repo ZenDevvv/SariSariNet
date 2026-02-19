@@ -1,0 +1,21 @@
+model AccountStatusEvent {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId      String        @db.ObjectId
+  fromStatus  AccountStatus
+  toStatus    AccountStatus
+  reason      String
+  actorUserId String?       @db.ObjectId
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User  @relation("UserAccountStatusEvents", fields: [userId], references: [id])
+  actorUser User? @relation("AccountStatusEventActor", fields: [actorUserId], references: [id])
+
+  @@index([userId, createdAt])
+  @@map("account_status_events")
+}

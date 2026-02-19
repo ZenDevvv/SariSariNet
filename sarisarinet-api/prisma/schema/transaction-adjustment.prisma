@@ -1,0 +1,27 @@
+enum TransactionAdjustmentAction {
+  CORRECT
+  VOID
+}
+
+model TransactionAdjustment {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  transactionId   String                      @db.ObjectId
+  action          TransactionAdjustmentAction
+  reason          String
+  beforeSnapshot  Json
+  afterSnapshot   Json
+  actorUserId     String                      @db.ObjectId
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  transaction Transaction @relation("TransactionAdjustmentTransaction", fields: [transactionId], references: [id])
+  actorUser   User        @relation("TransactionAdjustmentActor", fields: [actorUserId], references: [id])
+
+  @@index([transactionId, createdAt])
+  @@map("transaction_adjustments")
+}

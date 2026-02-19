@@ -1,0 +1,45 @@
+enum TransactionStatus {
+  POSTED
+  VOIDED
+}
+
+enum TransactionInvoiceStatus {
+  NONE
+  PENDING_SCAN
+  READY
+  REJECTED
+}
+
+model Transaction {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  sellerUserId     String                    @db.ObjectId
+  buyerUserId      String                    @db.ObjectId
+  recordedByUserId String                    @db.ObjectId
+  productListingId String?                   @db.ObjectId
+  amount           Float
+  currency         String
+  transactionDate  DateTime
+  note             String?
+  status           TransactionStatus         @default(POSTED)
+  invoiceStatus    TransactionInvoiceStatus  @default(NONE)
+  voidedAt         DateTime?
+  voidReason       String?
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sellerUser     User            @relation("TransactionSeller", fields: [sellerUserId], references: [id])
+  buyerUser      User            @relation("TransactionBuyer", fields: [buyerUserId], references: [id])
+  recordedByUser User            @relation("TransactionRecorder", fields: [recordedByUserId], references: [id])
+  productListing ProductListing? @relation("TransactionProductListing", fields: [productListingId], references: [id])
+  invoice        TransactionInvoice?      @relation("TransactionInvoiceTransaction")
+  adjustments    TransactionAdjustment[]  @relation("TransactionAdjustmentTransaction")
+
+  @@index([sellerUserId, buyerUserId, transactionDate])
+  @@index([status, transactionDate])
+  @@map("transactions")
+}

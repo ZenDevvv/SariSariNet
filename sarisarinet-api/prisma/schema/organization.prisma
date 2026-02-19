@@ -1,0 +1,28 @@
+enum OrganizationStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+model Organization {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name        String
+  slug        String             @unique
+  description String?
+  ownerUserId String             @db.ObjectId
+  status      OrganizationStatus @default(ACTIVE)
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ownerUser    User                      @relation("OrganizationOwner", fields: [ownerUserId], references: [id])
+  memberships  OrganizationMembership[]  @relation("OrganizationMembershipOrganization")
+  invites      OrganizationInvite[]      @relation("OrganizationInviteOrganization")
+  joinRequests OrganizationJoinRequest[] @relation("OrganizationJoinRequestOrganization")
+
+  @@index([ownerUserId])
+  @@map("organizations")
+}

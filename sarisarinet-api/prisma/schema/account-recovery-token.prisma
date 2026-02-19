@@ -1,0 +1,21 @@
+model AccountRecoveryToken {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId       String   @db.ObjectId
+  tokenHash    String   @unique
+  expiresAt    DateTime
+  consumedAt   DateTime?
+  attemptCount Int      @default(0)
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation("UserAccountRecoveryTokens", fields: [userId], references: [id])
+
+  @@index([expiresAt])
+  @@index([userId, expiresAt])
+  @@map("account_recovery_tokens")
+}

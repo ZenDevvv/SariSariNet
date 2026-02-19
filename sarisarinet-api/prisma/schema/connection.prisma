@@ -1,0 +1,21 @@
+model Connection {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userLowId       String  @db.ObjectId
+  userHighId      String  @db.ObjectId
+  sourceRequestId String? @db.ObjectId
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userLow  User @relation("ConnectionLowUser", fields: [userLowId], references: [id])
+  userHigh User @relation("ConnectionHighUser", fields: [userHighId], references: [id])
+
+  @@unique([userLowId, userHighId])
+  @@index([userLowId])
+  @@index([userHighId])
+  @@map("connections")
+}

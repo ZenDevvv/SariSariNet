@@ -1,0 +1,32 @@
+enum OrganizationInviteStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  EXPIRED
+}
+
+model OrganizationInvite {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  organizationId  String                   @db.ObjectId
+  invitedUserId   String                   @db.ObjectId
+  invitedByUserId String                   @db.ObjectId
+  status          OrganizationInviteStatus @default(PENDING)
+  expiresAt       DateTime
+  respondedAt     DateTime?
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organization  Organization @relation("OrganizationInviteOrganization", fields: [organizationId], references: [id])
+  invitedUser   User         @relation("OrganizationInviteeUser", fields: [invitedUserId], references: [id])
+  invitedByUser User         @relation("OrganizationInviterUser", fields: [invitedByUserId], references: [id])
+
+  @@unique([organizationId, invitedUserId, status])
+  @@index([invitedUserId, status])
+  @@index([organizationId, status])
+  @@map("organization_invites")
+}
