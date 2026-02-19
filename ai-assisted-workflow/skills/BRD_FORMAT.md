@@ -4,6 +4,8 @@
 
 Defines the structure for the Business Requirements Document (BRD). The BRD is the anchor for the entire workflow — every downstream phase references it. This format ensures requirements are complete, testable, and traceable.
 
+**Scope:** This workflow targets MVP only. Everything in the BRD body is MVP scope. Features that are out of MVP scope belong in Section 8 (Out of Scope) and are never spec'd in detail.
+
 ## Document Structure
 
 ```
@@ -59,10 +61,10 @@ The index has four parts:
 ```markdown
 ### Module Index
 
-| Module ID | Name | Section |
-|-----------|------|---------|
-| AUTH | Authentication & Authorization | [5.1](#51-auth--authentication--authorization) |
-| USERS | User Management | [5.2](#52-users--user-management) |
+| Module ID | Name                           | Section                                        |
+| --------- | ------------------------------ | ---------------------------------------------- |
+| AUTH      | Authentication & Authorization | [5.1](#51-auth--authentication--authorization) |
+| USERS     | User Management                | [5.2](#52-users--user-management)              |
 ```
 
 **3. Requirement Index** — one row per requirement ID, sorted by module:
@@ -70,11 +72,11 @@ The index has four parts:
 ```markdown
 ### Requirement Index
 
-| Req ID | Title | Module | Priority |
-|--------|-------|--------|----------|
-| AUTH-001 | User Registration | AUTH | Must-have |
-| AUTH-002 | User Login | AUTH | Must-have |
-| USERS-001 | View User Profile | USERS | Should-have |
+| Req ID    | Title             | Module | Priority |
+| --------- | ----------------- | ------ | -------- |
+| AUTH-001  | User Registration | AUTH   | MVP      |
+| AUTH-002  | User Login        | AUTH   | MVP      |
+| USERS-001 | View User Profile | USERS  | MVP      |
 ```
 
 **4. User Story Index** — one row per story ID:
@@ -82,11 +84,11 @@ The index has four parts:
 ```markdown
 ### User Story Index
 
-| Story ID | Title | Module | Pages | Priority |
-|----------|-------|--------|-------|----------|
-| US-001 | Register a new account | AUTH | RegisterPage | Must-have |
-| US-002 | Log in to the platform | AUTH | LoginPage | Must-have |
-| US-003 | View my dashboard | DASHBOARD | DashboardPage | Must-have |
+| Story ID | Title                  | Module    | Pages         | Priority |
+| -------- | ---------------------- | --------- | ------------- | -------- |
+| US-001   | Register a new account | AUTH      | RegisterPage  | MVP      |
+| US-002   | Log in to the platform | AUTH      | LoginPage     | MVP      |
+| US-003   | View my dashboard      | DASHBOARD | DashboardPage | MVP      |
 ```
 
 Generate the index **last**, after all sections are written, so IDs and titles are final. The index is read-only reference — it must exactly mirror what is in the document body.
@@ -97,7 +99,9 @@ Every module needs a short uppercase identifier in its heading:
 
 ```markdown
 ### 4.1 AUTH — Authentication & Authorization
+
 ### 4.2 USERS — User Management
+
 ### 4.3 PROJECTS — Project Management
 ```
 
@@ -119,16 +123,18 @@ Every requirement must include:
 ##### AUTH-001 — User Registration
 
 **Description:**
-1–3 sentences from the user's perspective.
+1–2 sentences from the user's perspective. No implementation detail.
 
 **Acceptance Criteria:**
+
 - GIVEN [precondition], WHEN [action], THEN [expected outcome]
 - GIVEN [precondition], WHEN [action], THEN [expected outcome]
 
 **Error States:**
+
 - WHEN [error condition], THEN [system behavior] → `ERROR_CODE`
 
-**Priority:** Must-have | Should-have | Nice-to-have
+**Priority:** MVP | Post-MVP
 ```
 
 ### User Stories
@@ -154,13 +160,13 @@ Sequential, starting at `001`. Never reuse an ID even if a story is removed.
 
 **Module:** AUTH
 **Pages:** RegisterPage
-**Priority:** Must-have
+**Priority:** MVP
 ```
 
 - **As a / I want to / So that** — standard user story format. The role must match a role from the User Roles table.
 - **Module** — which module this story belongs to. Must match a Module ID from Section 5.
 - **Pages** — the page(s) this story implies. Comma-separated if multiple. These become the page list for Phase 7 and Phase 10.
-- **Priority** — Must-have / Should-have / Nice-to-have.
+- **Priority** — MVP or Post-MVP. Post-MVP stories must not have pages assigned and should be moved to Section 8.
 
 #### Deriving Pages from Stories
 
@@ -169,11 +175,11 @@ After writing all stories, collect the unique page names from the **Pages** fiel
 ```markdown
 ### Page Manifest (derived from User Stories)
 
-| Page | Stories | Route |
-|------|---------|-------|
-| LoginPage | US-001, US-002 | /login |
-| DashboardPage | US-005, US-006 | /dashboard |
-| UserListPage | US-010 | /admin/users |
+| Page          | Stories        | Route        |
+| ------------- | -------------- | ------------ |
+| LoginPage     | US-001, US-002 | /login       |
+| DashboardPage | US-005, US-006 | /dashboard   |
+| UserListPage  | US-010         | /admin/users |
 ```
 
 This table is the source of truth for Phase 7 (what to design) and Phase 10 (what to build).
@@ -183,12 +189,14 @@ This table is the source of truth for Phase 7 (what to design) and Phase 10 (wha
 Use Given/When/Then format. Each criterion must be independently testable. Minimum 2 per requirement.
 
 **Good:**
+
 ```
 - GIVEN a registered user, WHEN they submit valid credentials, THEN they receive an access token and refresh token
 - GIVEN a registered user, WHEN they submit an incorrect password 5 times, THEN the account is locked for 15 minutes
 ```
 
 **Bad:**
+
 ```
 - The login should work properly
 - Users can log in with their credentials
@@ -206,26 +214,47 @@ Every failure path needs an error code and user-facing behavior:
 Each module also has a cross-cutting error states table for shared errors (auth failures, rate limits, etc.):
 
 ```markdown
-| Error Code       | Condition                  | User-Facing Behavior                    |
-|------------------|----------------------------|-----------------------------------------|
-| `UNAUTHORIZED`   | Missing or expired token   | Redirect to login page                  |
-| `FORBIDDEN`      | Insufficient role          | Show "You don't have permission"        |
+| Error Code     | Condition                | User-Facing Behavior             |
+| -------------- | ------------------------ | -------------------------------- |
+| `UNAUTHORIZED` | Missing or expired token | Redirect to login page           |
+| `FORBIDDEN`    | Insufficient role        | Show "You don't have permission" |
 ```
 
 ### Section Guidelines
 
-- **Overview:** 2–4 sentences. What the app is, who it's for. No implementation details.
-- **Objectives:** 3–7 measurable goals. "Reduce onboarding time by 50%" not "improve UX."
-- **User Roles:** Table with role, description, key permissions.
-- **User Stories:** Every user-facing interaction as a story. These drive page identification in Phase 7 and Phase 10.
+- **Overview:** 2–3 sentences. What the app is, who it's for. No implementation details.
+- **Objectives:** 3–5 measurable MVP goals. "Users can register and log in on day one" not "improve UX."
+- **User Roles:** Table with role, description, key permissions. MVP roles only.
+- **User Stories:** Every MVP user-facing interaction as a story. Post-MVP stories are not written — just listed by name in Section 8.
 - **Modules:** Core of the BRD. Order by independence — modules with no dependencies first.
-- **Non-Functional Requirements:** Measurable targets (e.g., "API response < 200ms at p95").
+- **Non-Functional Requirements:** Measurable targets (e.g., "API response < 200ms at p95"). MVP-relevant only.
 - **Assumptions & Constraints:** Tech choices, business constraints, integration assumptions.
-- **Out of Scope:** Explicit list of what's NOT included. Prevents scope creep.
+- **Out of Scope:** Explicit list of what's NOT in the MVP. This is where Post-MVP features live — names only, no specs.
 
-### Priority Balance
+### Priority
 
-Aim for roughly 60% Must-have, 25% Should-have, 15% Nice-to-have. If everything is Must-have, the prioritization is meaningless.
+Every requirement and user story has a single priority field: **MVP** or **Post-MVP**.
+
+- **MVP** — required for launch. If it's not needed to ship a working product, it's not MVP.
+- **Post-MVP** — desired but deferred. Do not spec these in the BRD body. List them only in Section 8 (Out of Scope) by name.
+
+If a feature is in the BRD body, it is MVP by definition. Post-MVP items that appear in the body are scope creep — move them to Section 8 and remove the full spec.
+
+### Condensing the BRD
+
+Long BRDs consume more tokens in every downstream phase that loads them. Keep the document as tight as possible without losing testability.
+
+**Rules for staying concise:**
+
+- **Descriptions:** 1–2 sentences max. No background, rationale, or implementation notes.
+- **Acceptance criteria:** Write only what is needed to verify the requirement. Do not document obvious behavior (e.g., "GIVEN a form, WHEN submitted, THEN it submits" adds nothing).
+- **Error states:** Merge error codes that have identical system behavior. One row per distinct behavior, not per input variant.
+- **Prose sections (Overview, Objectives, Assumptions):** Use bullet points and tables rather than paragraphs wherever possible.
+- **Out of Scope:** Names only — no descriptions. "Bulk CSV export" is enough; no need to explain what it would have done.
+- **No redundant cross-references:** Only add "Cross-module impact" notes when a cascade is non-obvious.
+- **No placeholder text:** Remove scaffolding like `[Continue for all user-facing interactions...]` before delivering the BRD.
+
+**Target length:** A BRD with 4–6 modules and 20–30 requirements should fit in 400–600 lines. If it's growing beyond that, look for prose that can become a table, or Post-MVP scope that crept into the body.
 
 ## Template
 
@@ -250,42 +279,42 @@ Aim for roughly 60% Must-have, 25% Should-have, 15% Nice-to-have. If everything 
 
 ### Module Index
 
-| Module ID | Name | Section |
-|-----------|------|---------|
-| AUTH | Authentication & Authorization | [5.1](#51-auth--authentication--authorization) |
+| Module ID | Name                           | Section                                        |
+| --------- | ------------------------------ | ---------------------------------------------- |
+| AUTH      | Authentication & Authorization | [5.1](#51-auth--authentication--authorization) |
 
 ### Requirement Index
 
-| Req ID | Title | Module | Priority |
-|--------|-------|--------|----------|
-| AUTH-001 | User Registration | AUTH | Must-have |
+| Req ID   | Title             | Module | Priority |
+| -------- | ----------------- | ------ | -------- |
+| AUTH-001 | User Registration | AUTH   | MVP      |
 
 ### User Story Index
 
-| Story ID | Title | Module | Pages | Priority |
-|----------|-------|--------|-------|----------|
-| US-001 | Register a new account | AUTH | RegisterPage | Must-have |
-| US-002 | Log in to the platform | AUTH | LoginPage | Must-have |
-| US-003 | View my dashboard | DASHBOARD | DashboardPage | Must-have |
+| Story ID | Title                  | Module    | Pages         | Priority |
+| -------- | ---------------------- | --------- | ------------- | -------- |
+| US-001   | Register a new account | AUTH      | RegisterPage  | MVP      |
+| US-002   | Log in to the platform | AUTH      | LoginPage     | MVP      |
+| US-003   | View my dashboard      | DASHBOARD | DashboardPage | MVP      |
 
 ---
 
 ## 1. Overview
 
-[What is this app? Who is it for? What problem does it solve?]
+[What is this app? Who is it for? What problem does it solve? 2–3 sentences.]
 
 ## 2. Objectives
 
-- [Measurable objective 1]
-- [Measurable objective 2]
-- [Measurable objective 3]
+- [Measurable MVP objective 1]
+- [Measurable MVP objective 2]
+- [Measurable MVP objective 3]
 
 ## 3. User Roles
 
-| Role     | Description                 | Key Permissions                           |
-|----------|-----------------------------|-------------------------------------------|
-| Admin    | Full system access          | Manage users, configure settings          |
-| Member   | Standard authenticated user | Create, read, update own resources        |
+| Role   | Description                 | Key Permissions                    |
+| ------ | --------------------------- | ---------------------------------- |
+| Admin  | Full system access          | Manage users, configure settings   |
+| Member | Standard authenticated user | Create, read, update own resources |
 
 ## 4. User Stories
 
@@ -297,7 +326,7 @@ Aim for roughly 60% Must-have, 25% Should-have, 15% Nice-to-have. If everything 
 
 **Module:** AUTH
 **Pages:** RegisterPage
-**Priority:** Must-have
+**Priority:** MVP
 
 #### US-002 — Log in to the platform
 
@@ -307,7 +336,7 @@ Aim for roughly 60% Must-have, 25% Should-have, 15% Nice-to-have. If everything 
 
 **Module:** AUTH
 **Pages:** LoginPage
-**Priority:** Must-have
+**Priority:** MVP
 
 #### US-003 — View my dashboard
 
@@ -317,17 +346,15 @@ Aim for roughly 60% Must-have, 25% Should-have, 15% Nice-to-have. If everything 
 
 **Module:** DASHBOARD
 **Pages:** DashboardPage
-**Priority:** Must-have
-
-[Continue for all user-facing interactions...]
+**Priority:** MVP
 
 ### Page Manifest (derived from User Stories)
 
-| Page | Stories | Route |
-|------|---------|-------|
-| RegisterPage | US-001 | /register |
-| LoginPage | US-002 | /login |
-| DashboardPage | US-003 | /dashboard |
+| Page          | Stories | Route      |
+| ------------- | ------- | ---------- |
+| RegisterPage  | US-001  | /register  |
+| LoginPage     | US-002  | /login     |
+| DashboardPage | US-003  | /dashboard |
 
 ## 5. Modules
 
@@ -341,21 +368,23 @@ Aim for roughly 60% Must-have, 25% Should-have, 15% Nice-to-have. If everything 
 A new user can create an account by providing their email, password, and display name.
 
 **Acceptance Criteria:**
+
 - GIVEN a visitor, WHEN they submit a valid email, password, and display name, THEN an account is created and a verification email is sent
 - GIVEN a visitor, WHEN they click the verification link within 24 hours, THEN the account becomes active
 
 **Error States:**
+
 - WHEN email is already registered, THEN show "An account with this email already exists" → `EMAIL_EXISTS`
 - WHEN password doesn't meet requirements, THEN show specific missing criteria → `WEAK_PASSWORD`
 
-**Priority:** Must-have
+**Priority:** MVP
 
 #### Error States
 
-| Error Code       | Condition                | User-Facing Behavior                         |
-|------------------|--------------------------|----------------------------------------------|
-| `UNAUTHORIZED`   | Missing or expired token | Redirect to login page                       |
-| `RATE_LIMITED`   | Too many requests        | Show "Too many attempts. Try again later"    |
+| Error Code     | Condition                | User-Facing Behavior                      |
+| -------------- | ------------------------ | ----------------------------------------- |
+| `UNAUTHORIZED` | Missing or expired token | Redirect to login page                    |
+| `RATE_LIMITED` | Too many requests        | Show "Too many attempts. Try again later" |
 
 ---
 
@@ -374,14 +403,18 @@ A new user can create an account by providing their email, password, and display
 
 ## 8. Out of Scope
 
+Post-MVP features (names only — not spec'd):
+
+- [Feature explicitly excluded]
 - [Feature explicitly excluded]
 ```
 
 ## Anti-Patterns
 
-1. **Implementation in requirements** — The BRD describes *what*, not *how*. Don't mention databases, frameworks, or API shapes. That's Phase 3's job.
+1. **Implementation in requirements** — The BRD describes _what_, not _how_. Don't mention databases, frameworks, or API shapes. That's Phase 3's job.
 2. **Vague acceptance criteria** — "Should work correctly" is not testable. Every criterion needs a specific precondition, action, and observable outcome.
 3. **Missing error states** — If a requirement can fail, document how. Zero error states almost always means incomplete analysis.
-4. **Everything is Must-have** — If you can't cut anything, you haven't prioritized.
+4. **Post-MVP scope in the body** — If a feature has full acceptance criteria and error states, it's treated as MVP by downstream phases. Don't spec things you won't build at launch — list them in Section 8 by name only.
 5. **Cross-module requirements without cross-references** — If deleting a user cascades to projects, note it: "Cross-module impact: see PROJECTS-005."
 6. **Stale index** — The index must mirror the document exactly. If a requirement is added or renamed, update all four index tables. An index that doesn't match the body is worse than no index.
+7. **Prose bloat** — Paragraphs where a table or bullet list would do, or long descriptions that repeat what acceptance criteria already say. Every extra line loads into every downstream phase — keep it tight.
