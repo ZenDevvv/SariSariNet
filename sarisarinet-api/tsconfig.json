@@ -13,13 +13,15 @@
 		"resolveJsonModule": true
 	},
 	"include": [
-		"app/**/*.ts",
+		"app/modules/**/*.ts",
 		"index.ts",
-		"middleware/**/*.ts",
+		"middleware/cache.ts",
+		"middleware/security.ts",
+		"middleware/verifyToken.ts",
 		"config/**/*.ts",
-		"helper/**/*.ts",
-		"utils/**/*.ts",
-		"zod/**/*.ts"
+		"zod/common.zod.ts",
+		"zod/object-id.zod.ts",
+		"zod/modules/**/*.ts"
 	],
 	"exclude": ["node_modules"]
 }
