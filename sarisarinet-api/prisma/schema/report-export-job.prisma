@@ -1,0 +1,38 @@
+enum ReportExportFormat {
+  CSV
+  XLSX
+}
+
+enum ReportExportJobStatus {
+  QUEUED
+  PROCESSING
+  READY
+  FAILED
+  EXPIRED
+}
+
+model ReportExportJob {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId     String              @db.ObjectId
+  module     ReportModule
+  format     ReportExportFormat
+  filters    Json
+  status     ReportExportJobStatus @default(QUEUED)
+  storageKey String?
+  errorCode  String?
+  expiresAt  DateTime
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation("ReportExportJobUser", fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+  @@index([expiresAt])
+  @@map("report_export_jobs")
+}

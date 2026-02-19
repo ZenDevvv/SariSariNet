@@ -1,0 +1,20 @@
+model AuthSession {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId           String   @db.ObjectId
+  refreshTokenHash String   @unique
+  deviceInfo       Json
+  expiresAt        DateTime
+  revokedAt        DateTime?
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation("UserAuthSessions", fields: [userId], references: [id])
+
+  @@index([userId, expiresAt])
+  @@map("auth_sessions")
+}

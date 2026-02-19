@@ -1,0 +1,21 @@
+model Repayment {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  borrowingRecordId String   @db.ObjectId
+  amount            Float
+  paidAt            DateTime
+  note              String?
+  actorUserId       String   @db.ObjectId
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  borrowingRecord BorrowingRecord @relation("BorrowingRecordRepayments", fields: [borrowingRecordId], references: [id])
+  actorUser       User            @relation("RepaymentActor", fields: [actorUserId], references: [id])
+
+  @@index([borrowingRecordId, paidAt])
+  @@map("repayments")
+}

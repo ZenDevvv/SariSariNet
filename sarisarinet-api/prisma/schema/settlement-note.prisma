@@ -1,0 +1,19 @@
+model SettlementNote {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  borrowingRecordId String @db.ObjectId
+  note              String
+  actorUserId       String @db.ObjectId
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  borrowingRecord BorrowingRecord @relation("BorrowingRecordSettlementNotes", fields: [borrowingRecordId], references: [id])
+  actorUser       User            @relation("SettlementNoteActor", fields: [actorUserId], references: [id])
+
+  @@index([borrowingRecordId, createdAt])
+  @@map("settlement_notes")
+}

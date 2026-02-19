@@ -1,0 +1,32 @@
+enum ConnectionNotificationType {
+  REQUEST_RECEIVED
+  REQUEST_ACCEPTED
+  REQUEST_REJECTED
+  CONNECTION_REMOVED
+}
+
+enum ConnectionNotificationReferenceType {
+  CONNECTION_REQUEST
+  CONNECTION
+}
+
+model ConnectionNotification {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId        String                              @db.ObjectId
+  type          ConnectionNotificationType
+  referenceType ConnectionNotificationReferenceType
+  referenceId   String                              @db.ObjectId
+  isRead        Boolean                             @default(false)
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation("ConnectionNotificationUser", fields: [userId], references: [id])
+
+  @@index([userId, isRead, createdAt])
+  @@map("connection_notifications")
+}

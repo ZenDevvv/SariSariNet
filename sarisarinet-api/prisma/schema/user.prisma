@@ -1,68 +1,66 @@
-enum UserStatus {
-  active
-  inactive
-  suspended
-  archived
+enum AccountStatus {
+  ACTIVE
+  DEACTIVATED
 }
 
 model User {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  avatar   String?
-  userName String? @unique
-  email    String  @unique
-  password String
-  role     Role
-  subRole  SubRole[]
+  email                 String        @unique
+  passwordHash          String
+  displayName           String
+  storefrontName        String?
+  bio                   String?
+  avatarUrl             String?
+  accountStatus         AccountStatus @default(ACTIVE)
+  activeOrganizationId  String?       @db.ObjectId
 
-  status      UserStatus @default(active)
-  isDeleted   Boolean    @default(false)
-  lastLogin   DateTime?
-  loginMethod String?
-
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orgId        String?       @db.ObjectId
-  organization Organization? @relation(fields: [orgId], references: [id])
+  authSessions               AuthSession[]             @relation("UserAuthSessions")
+  accountRecoveryTokens      AccountRecoveryToken[]    @relation("UserAccountRecoveryTokens")
+  accountStatusEvents        AccountStatusEvent[]      @relation("UserAccountStatusEvents")
+  actedAccountStatusEvents   AccountStatusEvent[]      @relation("AccountStatusEventActor")
 
-  personId String? @unique @db.ObjectId
-  person   Person? @relation(fields: [personId], references: [id], onDelete: Cascade)
+  sentConnectionRequests     ConnectionRequest[]       @relation("ConnectionRequestRequester")
+  receivedConnectionRequests ConnectionRequest[]       @relation("ConnectionRequestReceiver")
+  lowConnections             Connection[]              @relation("ConnectionLowUser")
+  highConnections            Connection[]              @relation("ConnectionHighUser")
+  connectionNotifications    ConnectionNotification[]  @relation("ConnectionNotificationUser")
 
-  activityLogs ActivityLog[]
-  auditLogs    AuditLog[]
+  ownedOrganizations               Organization[]            @relation("OrganizationOwner")
+  organizationMemberships          OrganizationMembership[]  @relation("OrganizationMembershipUser")
+  organizationInvitesReceived      OrganizationInvite[]      @relation("OrganizationInviteeUser")
+  organizationInvitesSent          OrganizationInvite[]      @relation("OrganizationInviterUser")
+  organizationJoinRequests         OrganizationJoinRequest[] @relation("OrganizationJoinRequester")
+  reviewedOrganizationJoinRequests OrganizationJoinRequest[] @relation("OrganizationJoinReviewer")
 
-  // --- LMS Relations ---
-  // Instructor relations
-  instructedSections Section[]      @relation("sectionInstructor")
-  sectionStaff       SectionStaff[] @relation("sectionStaff")
+  productListings            ProductListing[]              @relation("ProductListingSeller")
+  listingLifecycleEvents     ListingLifecycleEvent[]       @relation("ListingLifecycleEventActor")
+  suggestionLayoutPreference SuggestionLayoutPreference?   @relation("UserSuggestionLayoutPreference")
 
-  // Student relations
-  enrollments      Enrollment[]     @relation("enrollments")
-  submissions      Submission[]     @relation("submissions")
-  attendances      Attendance[]     @relation("attendances")
-  grades           Grade[]          @relation("grades")
-  moduleProgresses ModuleProgress[] @relation("moduleProgress")
-  lessonProgresses LessonProgress[] @relation("lessonProgress")
+  soldTransactions            Transaction[]           @relation("TransactionSeller")
+  boughtTransactions          Transaction[]           @relation("TransactionBuyer")
+  recordedTransactions        Transaction[]           @relation("TransactionRecorder")
+  uploadedTransactionInvoices TransactionInvoice[]    @relation("TransactionInvoiceUploader")
+  transactionAdjustments      TransactionAdjustment[] @relation("TransactionAdjustmentActor")
 
-  // Content authoring
-  sectionAnnouncements SectionAnnouncement[] @relation("sectionAnnouncements")
-  discussionThreads    DiscussionThread[]    @relation("discussionThreads")
-  discussionReplies    DiscussionReply[]     @relation("discussionReplies")
-  createdRubrics       Rubric[]              @relation("createdRubrics")
+  ownedBorrowingRecords        BorrowingRecord[]     @relation("BorrowingRecordOwner")
+  counterpartyBorrowingRecords BorrowingRecord[]     @relation("BorrowingRecordCounterparty")
+  repayments                   Repayment[]           @relation("RepaymentActor")
+  settlementNotes              SettlementNote[]      @relation("SettlementNoteActor")
+  borrowingAuditEntries        BorrowingAuditEntry[] @relation("BorrowingAuditEntryActor")
 
+  commerceMetricSnapshots  CommerceMetricSnapshot[]  @relation("CommerceMetricSnapshotUser")
+  borrowingMetricSnapshots BorrowingMetricSnapshot[] @relation("BorrowingMetricSnapshotUser")
+  reportViewPresets        ReportViewPreset[]        @relation("ReportViewPresetUser")
+  reportExportJobs         ReportExportJob[]         @relation("ReportExportJobUser")
+
+  @@index([accountStatus])
+  @@index([activeOrganizationId])
   @@map("users")
-}
-
-enum Role {
-  user
-  admin
-  viewer
-}
-
-enum SubRole {
-  student
-  instructor
-  org_admin
-  superadmin
 }

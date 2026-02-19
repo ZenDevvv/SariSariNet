@@ -1,0 +1,32 @@
+enum ListingLifecycleEventType {
+  CREATED
+  UPDATED
+  ARCHIVED
+  UNARCHIVED
+  INVENTORY_UPDATED
+  SOLD_OUT
+  RESTOCKED
+}
+
+model ListingLifecycleEvent {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  listingId    String                   @db.ObjectId
+  actorUserId  String                   @db.ObjectId
+  eventType    ListingLifecycleEventType
+  beforeState  Json?
+  afterState   Json?
+  reason       String?
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  listing   ProductListing @relation("ListingLifecycleEventListing", fields: [listingId], references: [id])
+  actorUser User           @relation("ListingLifecycleEventActor", fields: [actorUserId], references: [id])
+
+  @@index([listingId, createdAt])
+  @@map("listing_lifecycle_events")
+}

@@ -1,0 +1,29 @@
+enum SuggestionLayoutMode {
+  GRID
+  COMPACT
+  CARD
+}
+
+enum SuggestionSortMode {
+  RECENT
+  PRICE_LOW
+  PRICE_HIGH
+}
+
+model SuggestionLayoutPreference {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId      String               @unique @db.ObjectId
+  layoutMode  SuggestionLayoutMode @default(GRID)
+  sortMode    SuggestionSortMode   @default(RECENT)
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation("UserSuggestionLayoutPreference", fields: [userId], references: [id])
+
+  @@map("suggestion_layout_preferences")
+}

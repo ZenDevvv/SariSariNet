@@ -1,0 +1,33 @@
+enum OrganizationMembershipRole {
+  ADMIN
+  MEMBER
+}
+
+enum OrganizationMembershipStatus {
+  ACTIVE
+  REMOVED
+}
+
+model OrganizationMembership {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  organizationId String                       @db.ObjectId
+  userId         String                       @db.ObjectId
+  role           OrganizationMembershipRole   @default(MEMBER)
+  status         OrganizationMembershipStatus @default(ACTIVE)
+  joinedAt       DateTime
+  removedAt      DateTime?
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organization Organization @relation("OrganizationMembershipOrganization", fields: [organizationId], references: [id])
+  user         User         @relation("OrganizationMembershipUser", fields: [userId], references: [id])
+
+  @@unique([organizationId, userId, status])
+  @@index([organizationId, role, status])
+  @@map("organization_memberships")
+}

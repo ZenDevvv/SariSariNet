@@ -1,0 +1,30 @@
+enum OrganizationJoinRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+model OrganizationJoinRequest {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  organizationId   String                        @db.ObjectId
+  requesterUserId  String                        @db.ObjectId
+  status           OrganizationJoinRequestStatus @default(PENDING)
+  reviewedByUserId String?                       @db.ObjectId
+  reviewedAt       DateTime?
+
+  isDeleted Boolean  @default(false)
+  createdBy String?  @db.ObjectId
+  updatedBy String?  @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organization   Organization @relation("OrganizationJoinRequestOrganization", fields: [organizationId], references: [id])
+  requesterUser  User         @relation("OrganizationJoinRequester", fields: [requesterUserId], references: [id])
+  reviewedByUser User?        @relation("OrganizationJoinReviewer", fields: [reviewedByUserId], references: [id])
+
+  @@unique([organizationId, requesterUserId, status])
+  @@index([organizationId, status])
+  @@map("organization_join_requests")
+}
