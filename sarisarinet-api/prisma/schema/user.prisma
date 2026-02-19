@@ -1,0 +1,68 @@
+enum UserStatus {
+  active
+  inactive
+  suspended
+  archived
+}
+
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  avatar   String?
+  userName String? @unique
+  email    String  @unique
+  password String
+  role     Role
+  subRole  SubRole[]
+
+  status      UserStatus @default(active)
+  isDeleted   Boolean    @default(false)
+  lastLogin   DateTime?
+  loginMethod String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orgId        String?       @db.ObjectId
+  organization Organization? @relation(fields: [orgId], references: [id])
+
+  personId String? @unique @db.ObjectId
+  person   Person? @relation(fields: [personId], references: [id], onDelete: Cascade)
+
+  activityLogs ActivityLog[]
+  auditLogs    AuditLog[]
+
+  // --- LMS Relations ---
+  // Instructor relations
+  instructedSections Section[]      @relation("sectionInstructor")
+  sectionStaff       SectionStaff[] @relation("sectionStaff")
+
+  // Student relations
+  enrollments      Enrollment[]     @relation("enrollments")
+  submissions      Submission[]     @relation("submissions")
+  attendances      Attendance[]     @relation("attendances")
+  grades           Grade[]          @relation("grades")
+  moduleProgresses ModuleProgress[] @relation("moduleProgress")
+  lessonProgresses LessonProgress[] @relation("lessonProgress")
+
+  // Content authoring
+  sectionAnnouncements SectionAnnouncement[] @relation("sectionAnnouncements")
+  discussionThreads    DiscussionThread[]    @relation("discussionThreads")
+  discussionReplies    DiscussionReply[]     @relation("discussionReplies")
+  createdRubrics       Rubric[]              @relation("createdRubrics")
+
+  @@map("users")
+}
+
+enum Role {
+  user
+  admin
+  viewer
+}
+
+enum SubRole {
+  student
+  instructor
+  org_admin
+  superadmin
+}
