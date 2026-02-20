@@ -33,3 +33,14 @@ Column notes:
 | 4b | Backend Module | dashboard | Complete | 2026-02-19 | Implemented commerce and borrowing dashboard metric routes with range filtering and aggregated outputs. |
 | 4b | Backend Module | report | Complete | 2026-02-19 | Implemented report preset CRUD and export job create/status/download routes. |
 | 4b | Backend Module | systemMetric | Complete | 2026-02-19 | Implemented system-token-protected commerce metric recompute endpoint and snapshot write flow. |
+| 5 | Backend Testing | auth | Complete | 2026-02-19 | Added behavioral unit and integration tests for auth flows, validation, and recovery/auth failure error contracts. |
+| 5 | Backend Testing | user | Complete | 2026-02-19 | Added tests for profile/context/listing contracts, auth guards, deactivation confirmation, and validation boundaries. |
+| 5 | Backend Testing | connection | Complete | 2026-02-19 | Added tests for request lifecycle contracts, duplicate-request errors, auth enforcement, and schema boundaries. |
+| 5 | Backend Testing | notification | Complete | 2026-02-19 | Added tests for notification list/read auth behavior and invalid notification-id error handling. |
+| 5 | Backend Testing | organization | Complete | 2026-02-19 | Added tests for organization/member route guards, payload validation, and last-admin protection behavior. |
+| 5 | Backend Testing | borrowing | Complete | 2026-02-19 | Added tests for borrowing create/repayment contracts, overpayment edge cases, auth checks, and schema boundaries. |
+| 5 | Backend Testing | product | Complete | 2026-02-19 | Added tests for product route auth/public behavior, private visibility enforcement, search validation, and payload boundaries. |
+| 5 | Backend Testing | transaction | Complete | 2026-02-19 | Added tests for transaction/invoice route auth, creation contract validation, and invoice size/type error boundaries. |
+| 5 | Backend Testing | dashboard | Complete | 2026-02-19 | Added tests for dashboard auth requirements and invalid date-range error behavior. |
+| 5 | Backend Testing | report | Complete | 2026-02-19 | Added tests for preset/export route auth, schema boundaries, and expired export download behavior. |
+| 5 | Backend Testing | systemMetric | Complete | 2026-02-19 | Added tests for system-token enforcement, recompute payload validation, and snapshot recomputation outcomes. |
