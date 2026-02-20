@@ -44,3 +44,4 @@ Column notes:
 | 5 | Backend Testing | dashboard | Complete | 2026-02-19 | Added tests for dashboard auth requirements and invalid date-range error behavior. |
 | 5 | Backend Testing | report | Complete | 2026-02-19 | Added tests for preset/export route auth, schema boundaries, and expired export download behavior. |
 | 5 | Backend Testing | systemMetric | Complete | 2026-02-19 | Added tests for system-token enforcement, recompute payload validation, and snapshot recomputation outcomes. |
+| 6 | Migrations | - | ✅ Complete | 2026-02-20 | Added MongoDB Phase 6 seed pipeline for all finalized models with idempotent env-specific data volumes (dev/staging/test). |
