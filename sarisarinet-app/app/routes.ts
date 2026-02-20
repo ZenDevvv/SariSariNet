@@ -9,5 +9,5 @@ const authRoutes: RouteConfig = [route("/login", "routes/auth/login.tsx")];
 export default [
 	index("routes/landing.tsx"),
 	layout("layouts/auth-layout.tsx", authRoutes),
-	layout("layouts/admin-layout.tsx", PPPRoutes),
+	...(PPPRoutes.length > 0 ? [layout("layouts/admin-layout.tsx", PPPRoutes)] : []),
 ] satisfies RouteConfig;
