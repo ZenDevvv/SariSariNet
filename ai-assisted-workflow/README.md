@@ -33,7 +33,7 @@ You review the output, make corrections, and move to the next phase.
 /phase12-review <optional: what to review>
 /phase13-docs
 /phase14-deployment
-
+      
 # Start any new session — re-orients Claude with project state, stale items, and next action:
 /resume
 
