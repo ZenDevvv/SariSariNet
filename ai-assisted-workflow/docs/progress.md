@@ -1,4 +1,4 @@
-# Progress Tracker
+﻿# Progress Tracker
 
 <!--
 Auto-appended by each phase command on completion.
@@ -18,10 +18,10 @@ Column notes:
 
 | Phase | Name | Scope | Status | Date | Notes |
 |-------|------|-------|--------|------|-------|
-| 1 | BRD | — | ✅ Complete | 2026-02-19 | Completed BRD for multi-vendor marketplace with privacy, connections, organizations, and borrowing/lending tracking. |
-| 2 | Planning | — | ✅ Complete | 2026-02-19 | Published project plan with module estimates, sprint sequencing, dependency map, risk register, and critical path. |
-| 3 | Architecture | — | ✅ Complete | 2026-02-19 | Published full architecture with models, ERD, API map, auth rules, error standard, caching, media flow, and BRD route coverage. |
-| 4a | DB Schema | all | ✅ Complete | 2026-02-19 | 25 models, prisma generate OK |
+| 1 | BRD | â€” | âœ… Complete | 2026-02-19 | Completed BRD for multi-vendor marketplace with privacy, connections, organizations, and borrowing/lending tracking. |
+| 2 | Planning | â€” | âœ… Complete | 2026-02-19 | Published project plan with module estimates, sprint sequencing, dependency map, risk register, and critical path. |
+| 3 | Architecture | â€” | âœ… Complete | 2026-02-19 | Published full architecture with models, ERD, API map, auth rules, error standard, caching, media flow, and BRD route coverage. |
+| 4a | DB Schema | all | âœ… Complete | 2026-02-19 | 25 models, prisma generate OK |
 | 4b | Backend Module | auth | Complete | 2026-02-19 | Implemented register/login/recovery routes with AuthSession issuance and account recovery token flows. |
 | 4b | Backend Module | user | Complete | 2026-02-19 | Implemented /user/me profile/context/deactivation routes plus profile listing visibility and suggestion layout preference APIs. |
 | 4b | Backend Module | connection | Complete | 2026-02-19 | Implemented connection request lifecycle, connection removal, and incoming/outgoing/active connection listing routes. |
@@ -44,6 +44,34 @@ Column notes:
 | 5 | Backend Testing | dashboard | Complete | 2026-02-19 | Added tests for dashboard auth requirements and invalid date-range error behavior. |
 | 5 | Backend Testing | report | Complete | 2026-02-19 | Added tests for preset/export route auth, schema boundaries, and expired export download behavior. |
 | 5 | Backend Testing | systemMetric | Complete | 2026-02-19 | Added tests for system-token enforcement, recompute payload validation, and snapshot recomputation outcomes. |
-| 6 | Migrations | - | ✅ Complete | 2026-02-20 | Added MongoDB Phase 6 seed pipeline for all finalized models with idempotent env-specific data volumes (dev/staging/test). |
+| 6 | Migrations | - | âœ… Complete | 2026-02-20 | Added MongoDB Phase 6 seed pipeline for all finalized models with idempotent env-specific data volumes (dev/staging/test). |
 
-| 7 | UI Design | - | ✅ Complete | 2026-02-20 | Published full UI design spec with screenshot-derived style tokens, all BRD pages, user flows, responsive behavior, and per-page loading/empty/error/populated states. |
+| 7 | UI Design | - | âœ… Complete | 2026-02-20 | Published full UI design spec with screenshot-derived style tokens, all BRD pages, user flows, responsive behavior, and per-page loading/empty/error/populated states. |
+
+| 8 | Frontend API | user | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | auth-session | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | account-recovery-token | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | account-status-event | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | connection-request | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | connection | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | connection-notification | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | organization | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | organization-membership | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | organization-invite | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | organization-join-request | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | suggestion-layout-preference | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | product-listing | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | listing-lifecycle-event | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | transaction | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | transaction-invoice | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | transaction-adjustment | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | borrowing-record | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | repayment | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | settlement-note | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | borrowing-audit-entry | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | commerce-metric-snapshot | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | borrowing-metric-snapshot | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | report-view-preset | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+| 8 | Frontend API | report-export-job | Complete | 2026-02-20 | Copied backend Zod schema and generated endpoints, service, hooks, and mock factories. |
+
+

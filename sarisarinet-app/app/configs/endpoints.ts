@@ -156,4 +156,180 @@ export const API_ENDPOINTS = {
 		UPDATE: "/stock-record/:id",
 		DELETE: "/stock-record/:id", // Soft delete
 	},
+
+	AUTH_SESSION: {
+		GET_ALL: "/auth-session",
+		GET_BY_ID: "/auth-session/:id",
+		CREATE: "/auth-session",
+		UPDATE: "/auth-session/:id",
+		DELETE: "/auth-session/:id",
+	},
+
+	ACCOUNT_RECOVERY_TOKEN: {
+		GET_ALL: "/account-recovery-token",
+		GET_BY_ID: "/account-recovery-token/:id",
+		CREATE: "/account-recovery-token",
+		UPDATE: "/account-recovery-token/:id",
+		DELETE: "/account-recovery-token/:id",
+	},
+
+	ACCOUNT_STATUS_EVENT: {
+		GET_ALL: "/account-status-event",
+		GET_BY_ID: "/account-status-event/:id",
+		CREATE: "/account-status-event",
+		UPDATE: "/account-status-event/:id",
+		DELETE: "/account-status-event/:id",
+	},
+
+	CONNECTION_REQUEST: {
+		GET_ALL: "/connection-request",
+		GET_BY_ID: "/connection-request/:id",
+		CREATE: "/connection-request",
+		UPDATE: "/connection-request/:id",
+		DELETE: "/connection-request/:id",
+	},
+
+	CONNECTION: {
+		GET_ALL: "/connection",
+		GET_BY_ID: "/connection/:id",
+		CREATE: "/connection",
+		UPDATE: "/connection/:id",
+		DELETE: "/connection/:id",
+	},
+
+	CONNECTION_NOTIFICATION: {
+		GET_ALL: "/connection-notification",
+		GET_BY_ID: "/connection-notification/:id",
+		CREATE: "/connection-notification",
+		UPDATE: "/connection-notification/:id",
+		DELETE: "/connection-notification/:id",
+	},
+
+	ORGANIZATION_MEMBERSHIP: {
+		GET_ALL: "/organization-membership",
+		GET_BY_ID: "/organization-membership/:id",
+		CREATE: "/organization-membership",
+		UPDATE: "/organization-membership/:id",
+		DELETE: "/organization-membership/:id",
+	},
+
+	ORGANIZATION_INVITE: {
+		GET_ALL: "/organization-invite",
+		GET_BY_ID: "/organization-invite/:id",
+		CREATE: "/organization-invite",
+		UPDATE: "/organization-invite/:id",
+		DELETE: "/organization-invite/:id",
+	},
+
+	ORGANIZATION_JOIN_REQUEST: {
+		GET_ALL: "/organization-join-request",
+		GET_BY_ID: "/organization-join-request/:id",
+		CREATE: "/organization-join-request",
+		UPDATE: "/organization-join-request/:id",
+		DELETE: "/organization-join-request/:id",
+	},
+
+	SUGGESTION_LAYOUT_PREFERENCE: {
+		GET_ALL: "/suggestion-layout-preference",
+		GET_BY_ID: "/suggestion-layout-preference/:id",
+		CREATE: "/suggestion-layout-preference",
+		UPDATE: "/suggestion-layout-preference/:id",
+		DELETE: "/suggestion-layout-preference/:id",
+	},
+
+	PRODUCT_LISTING: {
+		GET_ALL: "/product-listing",
+		GET_BY_ID: "/product-listing/:id",
+		CREATE: "/product-listing",
+		UPDATE: "/product-listing/:id",
+		DELETE: "/product-listing/:id",
+	},
+
+	LISTING_LIFECYCLE_EVENT: {
+		GET_ALL: "/listing-lifecycle-event",
+		GET_BY_ID: "/listing-lifecycle-event/:id",
+		CREATE: "/listing-lifecycle-event",
+		UPDATE: "/listing-lifecycle-event/:id",
+		DELETE: "/listing-lifecycle-event/:id",
+	},
+
+	TRANSACTION_INVOICE: {
+		GET_ALL: "/transaction-invoice",
+		GET_BY_ID: "/transaction-invoice/:id",
+		CREATE: "/transaction-invoice",
+		UPDATE: "/transaction-invoice/:id",
+		DELETE: "/transaction-invoice/:id",
+	},
+
+	TRANSACTION_ADJUSTMENT: {
+		GET_ALL: "/transaction-adjustment",
+		GET_BY_ID: "/transaction-adjustment/:id",
+		CREATE: "/transaction-adjustment",
+		UPDATE: "/transaction-adjustment/:id",
+		DELETE: "/transaction-adjustment/:id",
+	},
+
+	BORROWING_RECORD: {
+		GET_ALL: "/borrowing-record",
+		GET_BY_ID: "/borrowing-record/:id",
+		CREATE: "/borrowing-record",
+		UPDATE: "/borrowing-record/:id",
+		DELETE: "/borrowing-record/:id",
+	},
+
+	REPAYMENT: {
+		GET_ALL: "/repayment",
+		GET_BY_ID: "/repayment/:id",
+		CREATE: "/repayment",
+		UPDATE: "/repayment/:id",
+		DELETE: "/repayment/:id",
+	},
+
+	SETTLEMENT_NOTE: {
+		GET_ALL: "/settlement-note",
+		GET_BY_ID: "/settlement-note/:id",
+		CREATE: "/settlement-note",
+		UPDATE: "/settlement-note/:id",
+		DELETE: "/settlement-note/:id",
+	},
+
+	BORROWING_AUDIT_ENTRY: {
+		GET_ALL: "/borrowing-audit-entry",
+		GET_BY_ID: "/borrowing-audit-entry/:id",
+		CREATE: "/borrowing-audit-entry",
+		UPDATE: "/borrowing-audit-entry/:id",
+		DELETE: "/borrowing-audit-entry/:id",
+	},
+
+	COMMERCE_METRIC_SNAPSHOT: {
+		GET_ALL: "/commerce-metric-snapshot",
+		GET_BY_ID: "/commerce-metric-snapshot/:id",
+		CREATE: "/commerce-metric-snapshot",
+		UPDATE: "/commerce-metric-snapshot/:id",
+		DELETE: "/commerce-metric-snapshot/:id",
+	},
+
+	BORROWING_METRIC_SNAPSHOT: {
+		GET_ALL: "/borrowing-metric-snapshot",
+		GET_BY_ID: "/borrowing-metric-snapshot/:id",
+		CREATE: "/borrowing-metric-snapshot",
+		UPDATE: "/borrowing-metric-snapshot/:id",
+		DELETE: "/borrowing-metric-snapshot/:id",
+	},
+
+	REPORT_VIEW_PRESET: {
+		GET_ALL: "/report-view-preset",
+		GET_BY_ID: "/report-view-preset/:id",
+		CREATE: "/report-view-preset",
+		UPDATE: "/report-view-preset/:id",
+		DELETE: "/report-view-preset/:id",
+	},
+
+	REPORT_EXPORT_JOB: {
+		GET_ALL: "/report-export-job",
+		GET_BY_ID: "/report-export-job/:id",
+		CREATE: "/report-export-job",
+		UPDATE: "/report-export-job/:id",
+		DELETE: "/report-export-job/:id",
+	},
 };
