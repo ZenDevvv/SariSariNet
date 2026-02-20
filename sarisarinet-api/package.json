@@ -25,7 +25,7 @@
 		"zod-generate": "node scripts/zod-generate.js"
 	},
 	"prisma": {
-		"seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+		"seed": "ts-node prisma/seed.ts"
 	},
 	"author": "1BIS",
 	"license": "MIT",
